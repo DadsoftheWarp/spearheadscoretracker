@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { collection, addDoc, query, orderBy, getDocs, serverTimestamp } from 'firebase/firestore';
+import { db } from './firebase.js';
 import { useLocalStorage } from './hooks/useLocalStorage.js';
+import { useAuth } from './hooks/useAuth.js';
 import HomeScreen from './components/HomeScreen.jsx';
 import GameSetupScreen from './components/GameSetupScreen.jsx';
 import GameScreen from './components/GameScreen.jsx';
 import GameSummaryScreen from './components/GameSummaryScreen.jsx';
 import RecordsScreen from './components/RecordsScreen.jsx';
+import GroupScreen from './components/GroupScreen.jsx';
 
 const SCREENS = {
   HOME: 'home',
@@ -12,6 +16,7 @@ const SCREENS = {
   GAME: 'game',
   SUMMARY: 'summary',
   RECORDS: 'records',
+  GROUP: 'group',
 };
 
 export default function App() {
@@ -21,6 +26,39 @@ export default function App() {
 
   const [games, setGames] = useLocalStorage('spearhead_games', []);
   const [records, setRecords] = useLocalStorage('spearhead_records', {});
+
+  const { user, loading: authLoading, signIn, signOut } = useAuth();
+  const [activeGroup, setActiveGroup] = useLocalStorage('spearhead_active_group', null);
+  const [groupGames, setGroupGames] = useState([]);
+  const [syncing, setSyncing] = useState(false);
+
+  // Sync group games when user/group changes
+  useEffect(() => {
+    let cancelled = false;
+
+    async function sync() {
+      if (!user || !activeGroup?.id) {
+        setGroupGames([]);
+        return;
+      }
+      setSyncing(true);
+      try {
+        const gamesCol = collection(db, 'groups', activeGroup.id, 'games');
+        const q = query(gamesCol, orderBy('date', 'desc'));
+        const snap = await getDocs(q);
+        if (!cancelled) {
+          setGroupGames(snap.docs.map((d) => ({ ...d.data(), id: d.id })));
+        }
+      } catch {
+        // fail silently when offline
+      } finally {
+        if (!cancelled) setSyncing(false);
+      }
+    }
+
+    sync();
+    return () => { cancelled = true; };
+  }, [user, activeGroup?.id]);
 
   function handleStartGame(setupData) {
     setSetup(setupData);
@@ -43,6 +81,7 @@ export default function App() {
       priorities: result.priorities ?? [],
     };
 
+    // 1. Save locally immediately
     setGames((prev) => [...prev, newGame]);
 
     setRecords((prev) => {
@@ -65,9 +104,27 @@ export default function App() {
       return next;
     });
 
+    // 2. Navigate home immediately — never block on network
     setSetup(null);
     setResult(null);
     setScreen(SCREENS.HOME);
+
+    // 3. Write to Firestore in background if group active
+    if (user && activeGroup?.id) {
+      const firestoreGame = {
+        ...newGame,
+        recordedBy: user.uid,
+        recordedByName: user.displayName ?? '',
+        date: newGame.date,
+        createdAt: serverTimestamp(),
+      };
+      addDoc(collection(db, 'groups', activeGroup.id, 'games'), firestoreGame)
+        .then((docRef) => {
+          // Optimistically prepend to groupGames
+          setGroupGames((prev) => [{ ...newGame, id: docRef.id }, ...prev]);
+        })
+        .catch(() => {}); // fail silently
+    }
   }
 
   function handleDiscard() {
@@ -85,8 +142,15 @@ export default function App() {
     <div className="app-container">
       {screen === SCREENS.HOME && (
         <HomeScreen
+          user={user}
+          authLoading={authLoading}
+          onSignIn={signIn}
+          onSignOut={signOut}
           onNewGame={() => setScreen(SCREENS.SETUP)}
           onRecords={() => setScreen(SCREENS.RECORDS)}
+          onGroups={() => setScreen(SCREENS.GROUP)}
+          activeGroup={activeGroup}
+          syncing={syncing}
         />
       )}
       {screen === SCREENS.SETUP && (
@@ -113,7 +177,17 @@ export default function App() {
         <RecordsScreen
           records={records}
           games={games}
+          groupGames={groupGames}
+          activeGroup={activeGroup}
           onClearAll={handleClearAll}
+          onBack={() => setScreen(SCREENS.HOME)}
+        />
+      )}
+      {screen === SCREENS.GROUP && user && (
+        <GroupScreen
+          user={user}
+          activeGroup={activeGroup}
+          onGroupChange={setActiveGroup}
           onBack={() => setScreen(SCREENS.HOME)}
         />
       )}

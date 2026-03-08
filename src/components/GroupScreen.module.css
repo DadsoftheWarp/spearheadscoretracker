@@ -1,0 +1,162 @@
+.groupScreen {
+  gap: 20px;
+}
+
+/* ── Tabs ───────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.tab {
+  flex: 1;
+  min-height: 40px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tabActive {
+  background: var(--surface-3);
+  color: var(--accent);
+  border: 1px solid rgba(232, 115, 42, 0.25);
+}
+
+/* ── Tab content ────────────────────────────────────────────── */
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fieldLabel {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: -6px;
+}
+
+.codeInput {
+  letter-spacing: 0.3em;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ── Active Group ───────────────────────────────────────────── */
+.activeGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.groupLabel {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.groupName {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.memberCount {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ── Invite section ─────────────────────────────────────────── */
+.inviteSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+.inviteLabel {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.codeRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inviteCode {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  flex: 1;
+}
+
+.copyBtn {
+  flex-shrink: 0;
+}
+
+.inviteHint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Leave ──────────────────────────────────────────────────── */
+.leaveBtn {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.confirmLeave {
+  background: var(--surface-2);
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.confirmLeave p {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.confirmActions {
+  display: flex;
+  gap: 10px;
+}

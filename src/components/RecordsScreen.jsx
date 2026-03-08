@@ -304,11 +304,31 @@ function PlayerRecord({ playerName, record, games }) {
   );
 }
 
-export default function RecordsScreen({ records, games, onClearAll, onBack }) {
+// Derive records map from a games array (for group view)
+function deriveRecords(gamesList) {
+  const map = {};
+  for (const game of gamesList) {
+    const { player1, player2, winner } = game;
+    for (const [key, player] of [['player1', player1], ['player2', player2]]) {
+      if (!map[player.name]) map[player.name] = { wins: 0, losses: 0, draws: 0 };
+      if (winner === 'draw') map[player.name].draws += 1;
+      else if (winner === key) map[player.name].wins += 1;
+      else map[player.name].losses += 1;
+    }
+  }
+  return map;
+}
+
+export default function RecordsScreen({ records, games, groupGames = [], activeGroup = null, onClearAll, onBack }) {
   const [search, setSearch] = useState('');
   const [confirmClear, setConfirmClear] = useState(false);
+  const [view, setView] = useState('local'); // 'local' | 'group'
 
-  const playerNames = Object.keys(records).filter((name) =>
+  const isGroupView = view === 'group' && activeGroup;
+  const displayGames = isGroupView ? groupGames : games;
+  const displayRecords = isGroupView ? deriveRecords(groupGames) : records;
+
+  const playerNames = Object.keys(displayRecords).filter((name) =>
     name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -318,6 +338,23 @@ export default function RecordsScreen({ records, games, onClearAll, onBack }) {
         <button className="btn btn-ghost back-btn" onClick={onBack}>← Back</button>
         <h2>Records</h2>
       </div>
+
+      {activeGroup && (
+        <div className={styles.viewToggle}>
+          <button
+            className={`${styles.toggleBtn} ${!isGroupView ? styles.toggleActive : ''}`}
+            onClick={() => setView('local')}
+          >
+            My Games
+          </button>
+          <button
+            className={`${styles.toggleBtn} ${isGroupView ? styles.toggleActive : ''}`}
+            onClick={() => setView('group')}
+          >
+            Group: {activeGroup.name}
+          </button>
+        </div>
+      )}
 
       <input
         className={`input ${styles.searchInput}`}
@@ -335,32 +372,34 @@ export default function RecordsScreen({ records, games, onClearAll, onBack }) {
             <PlayerRecord
               key={name}
               playerName={name}
-              record={records[name]}
-              games={games}
+              record={displayRecords[name]}
+              games={displayGames}
             />
           ))}
         </div>
       )}
 
-      <div className={styles.recordsDangerZone}>
-        {confirmClear ? (
-          <div className={styles.confirmClear}>
-            <p>Delete all records and game history?</p>
-            <div className={styles.confirmActions}>
-              <button className="btn btn-danger" onClick={() => { onClearAll(); setConfirmClear(false); }}>
-                Yes, clear all
-              </button>
-              <button className="btn btn-secondary" onClick={() => setConfirmClear(false)}>
-                Cancel
-              </button>
+      {!isGroupView && (
+        <div className={styles.recordsDangerZone}>
+          {confirmClear ? (
+            <div className={styles.confirmClear}>
+              <p>Delete all records and game history?</p>
+              <div className={styles.confirmActions}>
+                <button className="btn btn-danger" onClick={() => { onClearAll(); setConfirmClear(false); }}>
+                  Yes, clear all
+                </button>
+                <button className="btn btn-secondary" onClick={() => setConfirmClear(false)}>
+                  Cancel
+                </button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <button className="btn btn-danger btn-sm" onClick={() => setConfirmClear(true)}>
-            Clear All Records
-          </button>
-        )}
-      </div>
+          ) : (
+            <button className="btn btn-danger btn-sm" onClick={() => setConfirmClear(true)}>
+              Clear All Records
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
