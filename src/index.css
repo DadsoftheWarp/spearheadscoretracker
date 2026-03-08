@@ -1,0 +1,267 @@
+/* ============================================================
+   CSS Variables — Dark AoS Theme
+   ============================================================ */
+:root {
+  --bg: #0a0908;
+  --surface: #161412;
+  --surface-2: #211e18;
+  --surface-3: #2c2820;
+
+  /* Primary accent — orange */
+  --accent: #e8732a;
+  --accent-dim: #b85a1f;
+  --accent-glow: rgba(232, 115, 42, 0.35);
+
+  /* Secondary accent — gold */
+  --gold: #d4a843;
+  --gold-dim: rgba(212, 168, 67, 0.12);
+
+  /* Score type colors */
+  --vp-color: #5aa0e8;
+  --bt-color: #3dbf7a;
+  --twist-color: #a96dd6;
+
+  /* UI colors */
+  --text: #f0e6d0;
+  --text-muted: #8a7a60;
+  --danger: #c0392b;
+  --danger-dim: #922b21;
+  --success: #27ae60;
+  --border: #443d30;
+  --border-bright: #5a5040;
+
+  /* Alliance colors */
+  --order-color: #4a90d9;
+  --chaos-color: #c0392b;
+  --death-color: #8e44ad;
+  --destruction-color: #6b8e3a;
+
+  font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+/* ============================================================
+   App Container
+   ============================================================ */
+.app-container {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+}
+
+/* ============================================================
+   Screens — shared base
+   ============================================================ */
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+}
+
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.screen-header h2 {
+  flex: 1;
+  font-size: 1.3rem;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Buttons — shared
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s,
+    transform 0.1s;
+  text-decoration: none;
+  user-select: none;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, #f08030 100%);
+  color: #0a0908;
+  box-shadow: 0 2px 14px rgba(232, 115, 42, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #f08040 0%, #f8963d 100%);
+  box-shadow: 0 4px 22px rgba(232, 115, 42, 0.5);
+}
+
+.btn-secondary {
+  background-color: var(--surface-2);
+  color: var(--text);
+  border: 1px solid rgba(212, 168, 67, 0.25);
+}
+
+.btn-secondary:hover {
+  background-color: var(--surface-3);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-dim);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.btn-large {
+  width: 100%;
+  min-height: 52px;
+  font-size: 1.1rem;
+}
+
+.btn-sm {
+  min-height: 36px;
+  padding: 6px 14px;
+  font-size: 0.875rem;
+}
+
+.back-btn {
+  font-size: 0.875rem;
+  min-height: 36px;
+  padding: 6px 12px;
+}
+
+/* ============================================================
+   Inputs — shared
+   ============================================================ */
+.input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  background-color: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  appearance: none;
+}
+
+.input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  background-color: var(--surface-3);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+select.input {
+  cursor: pointer;
+}
+
+/* ============================================================
+   Stats — shared (GameScreen header + RecordsScreen)
+   ============================================================ */
+.stat {
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.stat.win {
+  color: var(--success);
+  background: rgba(39, 174, 96, 0.15);
+}
+
+.stat.loss {
+  color: var(--danger);
+  background: rgba(192, 57, 43, 0.15);
+}
+
+.stat.draw {
+  color: var(--text-muted);
+  background: rgba(138, 122, 96, 0.12);
+}
+
+.stat.pct {
+  color: var(--gold);
+  background: rgba(212, 168, 67, 0.12);
+}
+
+/* ============================================================
+   Shared utilities
+   ============================================================ */
+.error-msg {
+  color: var(--danger);
+  font-size: 0.875rem;
+  text-align: center;
+}

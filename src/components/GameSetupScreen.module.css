@@ -1,0 +1,140 @@
+.setupScreen {
+  overflow-y: auto;
+}
+
+.setupPlayers {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.playerSetup {
+  background: linear-gradient(180deg, rgba(232, 115, 42, 0.05) 0%, var(--surface) 50%);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.playerLabel {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.allianceBadge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.allianceOrder {
+  background: rgba(74, 144, 217, 0.2);
+  color: var(--order-color);
+  border: 1px solid rgba(74, 144, 217, 0.3);
+}
+
+.allianceChaos {
+  background: rgba(192, 57, 43, 0.2);
+  color: var(--chaos-color);
+  border: 1px solid rgba(192, 57, 43, 0.3);
+}
+
+.allianceDeath {
+  background: rgba(142, 68, 173, 0.2);
+  color: var(--death-color);
+  border: 1px solid rgba(142, 68, 173, 0.3);
+}
+
+.allianceDestruction {
+  background: rgba(107, 142, 58, 0.2);
+  color: var(--destruction-color);
+  border: 1px solid rgba(107, 142, 58, 0.3);
+}
+
+.vsDivider {
+  align-self: center;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 900;
+  background: linear-gradient(180deg, var(--accent), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.2em;
+  padding: 4px 0;
+}
+
+.setupStartBtn {
+  margin-top: auto;
+}
+
+/* ── Roster Panel ───────────────────────────────────────────── */
+.rosterPanel {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rosterGeneral {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.rosterGeneralBadge {
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--gold);
+  background: rgba(212, 168, 67, 0.12);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  padding: 1px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.rosterGeneralName {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.rosterUnits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.rosterUnit {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  padding-left: 10px;
+  position: relative;
+}
+
+.rosterUnit::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}

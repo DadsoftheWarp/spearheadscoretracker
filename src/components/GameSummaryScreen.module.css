@@ -1,0 +1,234 @@
+.summaryScreen {
+  align-items: stretch;
+}
+
+.summaryTitle {
+  text-align: center;
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.winnerBanner {
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.bannerWin {
+  background: linear-gradient(135deg, rgba(232, 115, 42, 0.14) 0%, rgba(212, 168, 67, 0.08) 100%);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  box-shadow:
+    0 0 24px rgba(232, 115, 42, 0.25),
+    inset 0 0 24px rgba(232, 115, 42, 0.05);
+}
+
+.bannerDraw {
+  background: rgba(138, 122, 96, 0.12);
+  border: 2px solid var(--text-muted);
+  color: var(--text-muted);
+}
+
+.summaryTableWrap {
+  overflow-x: auto;
+}
+
+.summaryTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.summaryTable th,
+.summaryTable td {
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.summaryTable th {
+  background: linear-gradient(180deg, var(--surface-3) 0%, var(--surface) 100%);
+  color: var(--gold);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Round total row — no bottom border (breakdown row provides it) */
+.roundTotalRow td {
+  font-weight: 700;
+  padding-bottom: 2px;
+}
+
+.roundLabel {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Breakdown row — colored VP/BT/Twist chips */
+.breakdownRow td {
+  padding-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.breakdownCell {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.vpStat  { color: var(--vp-color);    font-size: 0.75rem; font-weight: 700; }
+.btStat  { color: var(--bt-color);    font-size: 0.75rem; font-weight: 700; }
+.twStat  { color: var(--twist-color); font-size: 0.75rem; font-weight: 700; }
+
+.summaryTotalRow td {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent);
+  background: linear-gradient(180deg, var(--surface-3), var(--surface));
+  border-top: 2px solid var(--border);
+}
+
+.factionSummary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.factionChip {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background-color: var(--surface-2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border-bright);
+}
+
+.factionChipSub {
+  opacity: 0.65;
+  font-size: 0.75rem;
+}
+
+/* ── Priority by Round ─────────────────────────────────────── */
+.prioritySection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prioritySectionTitle {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.priorityGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.priorityChip {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.priorityChipSet {
+  border-color: rgba(232, 115, 42, 0.35);
+  background: rgba(232, 115, 42, 0.07);
+}
+
+.priorityRound {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.priorityName {
+  font-size: 0.78rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.priorityNameSet {
+  color: var(--accent);
+}
+
+.priorityNameUnset {
+  color: var(--text-muted);
+}
+
+/* Double-turn chip highlight */
+.priorityChipDouble {
+  border-color: rgba(232, 115, 42, 0.55);
+  background: rgba(232, 115, 42, 0.1);
+}
+
+/* Small label inside chip */
+.prioritySubLabel {
+  font-size: 0.52rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* "Double!" badge */
+.doubleTurnBadge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(232, 115, 42, 0.15);
+  border: 1px solid rgba(232, 115, 42, 0.4);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* Name when priority was passed (goes second despite winning roll) */
+.priorityNamePassed {
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Footnote below grid */
+.priorityPassedNote {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* ── Actions ───────────────────────────────────────────────── */
+.summaryActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
