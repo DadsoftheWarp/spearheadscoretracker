@@ -5,6 +5,8 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
+  setPersistence,
+  browserLocalPersistence,
   signOut as firebaseSignOut,
 } from 'firebase/auth';
 import { auth } from '../firebase.js';
@@ -13,8 +15,10 @@ function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches;
 }
 
-
 const provider = new GoogleAuthProvider();
+
+// Ensure auth state survives page reloads
+setPersistence(auth, browserLocalPersistence).catch(() => {});
 
 export function useAuth() {
   // null = still resolving, false = signed out, object = signed-in user
@@ -23,12 +27,21 @@ export function useAuth() {
   const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
-    // Handle redirect result (PWA standalone sign-in)
-    getRedirectResult(auth).catch((err) => {
-      if (err?.code !== 'auth/null-user') {
-        setAuthError(err?.message ?? 'Sign-in failed. Please try again.');
-      }
-    });
+    // On iOS, signInWithPopup falls back to a redirect internally.
+    // We must explicitly consume the redirect result before onAuthStateChanged
+    // settles, otherwise it fires with null too early.
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          setUser(result.user);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err?.code && err.code !== 'auth/null-user') {
+          setAuthError(err?.message ?? 'Sign-in failed. Please try again.');
+        }
+      });
 
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser ?? false);
