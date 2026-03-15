@@ -3,6 +3,7 @@ import styles from './HomeScreen.module.css';
 export default function HomeScreen({
   user,
   authLoading,
+  authError,
   onSignIn,
   onSignOut,
   onNewGame,
@@ -26,9 +27,12 @@ export default function HomeScreen({
               <span className={styles.authName}>{(user.displayName ?? '').split(' ')[0]}</span>
             </div>
           ) : (
-            <button className={styles.authPill} onClick={onSignIn}>
-              Sign in
-            </button>
+            <>
+              <button className={styles.authPill} onClick={onSignIn}>
+                Sign in
+              </button>
+              {authError && <p className={styles.authError}>{authError}</p>}
+            </>
           )}
         </div>
       )}

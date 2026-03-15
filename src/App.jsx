@@ -27,7 +27,7 @@ export default function App() {
   const [games, setGames] = useLocalStorage('spearhead_games', []);
   const [records, setRecords] = useLocalStorage('spearhead_records', {});
 
-  const { user, loading: authLoading, signIn, signOut } = useAuth();
+  const { user, loading: authLoading, signIn, signOut, authError } = useAuth();
   const [activeGroup, setActiveGroup] = useLocalStorage('spearhead_active_group', null);
   const [groupGames, setGroupGames] = useState([]);
   const [syncing, setSyncing] = useState(false);
@@ -147,6 +147,7 @@ export default function App() {
         <HomeScreen
           user={user}
           authLoading={authLoading}
+          authError={authError}
           onSignIn={signIn}
           onSignOut={signOut}
           onNewGame={() => setScreen(SCREENS.SETUP)}

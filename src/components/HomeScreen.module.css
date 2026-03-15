@@ -123,6 +123,16 @@
   color: var(--text);
 }
 
+.authError {
+  font-size: 0.8rem;
+  color: var(--danger);
+  text-align: right;
+  margin-top: 6px;
+  max-width: 260px;
+  align-self: flex-end;
+  line-height: 1.3;
+}
+
 .authAvatar {
   width: 24px;
   height: 24px;

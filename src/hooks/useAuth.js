@@ -13,9 +13,6 @@ function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches;
 }
 
-function isIOS() {
-  return /iP(ad|hone|od)/.test(navigator.userAgent);
-}
 
 const provider = new GoogleAuthProvider();
 
@@ -23,10 +20,15 @@ export function useAuth() {
   // null = still resolving, false = signed out, object = signed-in user
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
     // Handle redirect result (PWA standalone sign-in)
-    getRedirectResult(auth).catch(() => {});
+    getRedirectResult(auth).catch((err) => {
+      if (err?.code !== 'auth/null-user') {
+        setAuthError(err?.message ?? 'Sign-in failed. Please try again.');
+      }
+    });
 
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser ?? false);
@@ -36,14 +38,22 @@ export function useAuth() {
   }, []);
 
   async function signIn() {
+    setAuthError(null);
     try {
-      if (isStandalone() || isIOS()) {
+      if (isStandalone()) {
         await signInWithRedirect(auth, provider);
       } else {
         await signInWithPopup(auth, provider);
       }
-    } catch {
-      // user cancelled or error — ignore
+    } catch (err) {
+      const code = err?.code ?? '';
+      // Ignore user-cancelled flows
+      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return;
+      if (code === 'auth/popup-blocked') {
+        setAuthError('Pop-up was blocked. Please allow pop-ups for this site, or add it to your Home Screen and sign in from there.');
+      } else {
+        setAuthError(err?.message ?? 'Sign-in failed. Please try again.');
+      }
     }
   }
 
@@ -51,5 +61,5 @@ export function useAuth() {
     await firebaseSignOut(auth);
   }
 
-  return { user, loading, signIn, signOut };
+  return { user, loading, signIn, signOut, authError };
 }
