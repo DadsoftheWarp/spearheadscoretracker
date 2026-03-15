@@ -50,7 +50,7 @@ export default function HomeScreen({
         <h1 className={styles.appTitle}>Age of Sigmar: Spearhead</h1>
         <p className={styles.appSubtitle}>Score Tracker</p>
         <p className={styles.appTagline}>Presented by Dads of the Warp</p>
-        <p>Alpha Version</p>
+        <p className={styles.appTagline}>Alpha Version</p>
       </div>
 
       <div className={styles.homeActions}>

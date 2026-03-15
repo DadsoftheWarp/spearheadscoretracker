@@ -47,10 +47,13 @@ export function useAuth() {
       }
     } catch (err) {
       const code = err?.code ?? '';
-      // Ignore user-cancelled flows
-      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return;
+      if (code === 'auth/cancelled-popup-request') return;
       if (code === 'auth/popup-blocked') {
         setAuthError('Pop-up was blocked. Please allow pop-ups for this site, or add it to your Home Screen and sign in from there.');
+      } else if (code === 'auth/unauthorized-domain') {
+        setAuthError('This domain is not authorized in Firebase. Add dadsofthewarp.github.io to Firebase Console → Authentication → Authorized domains.');
+      } else if (code === 'auth/popup-closed-by-user') {
+        setAuthError('Sign-in was cancelled or the pop-up closed unexpectedly. Try again.');
       } else {
         setAuthError(err?.message ?? 'Sign-in failed. Please try again.');
       }
