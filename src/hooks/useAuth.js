@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithPopup,
   signInWithRedirect,
-  getRedirectResult,
   setPersistence,
   browserLocalPersistence,
   signOut as firebaseSignOut,
@@ -21,29 +21,29 @@ export function useAuth() {
   const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
-    // After Google redirects back to the app, grab the signed-in user
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result?.user) setUser(result.user);
-      })
-      .catch(() => {
-        setAuthError('Sign-in failed. Please try again.');
-      });
-
     // Listen for auth state changes (restores session on page load)
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser ?? false);  // false = definitively signed out
       setLoading(false);
     });
-
     return unsubscribe;
   }, []);
 
-  function signIn() {
+  async function signIn() {
     setAuthError(null);
-    // Redirect works on all browsers including iOS Safari
-    // Popup is blocked by Safari's ITP when using a cross-origin auth handler
-    signInWithRedirect(auth, googleProvider);
+    try {
+      // Popup opens a Google sign-in window without redirecting the whole page.
+      // This avoids the redirect-URL loop that occurs when authDomain === hosting domain.
+      const result = await signInWithPopup(auth, googleProvider);
+      setUser(result.user);
+    } catch (error) {
+      if (error.code === 'auth/popup-blocked') {
+        // Popup was blocked by the browser — fall back to full-page redirect
+        signInWithRedirect(auth, googleProvider);
+      } else if (error.code !== 'auth/popup-closed-by-user') {
+        setAuthError('Sign-in failed. Please try again.');
+      }
+    }
   }
 
   async function signOut() {
