@@ -23,20 +23,6 @@ function RosterPanel({ team }) {
   if (!roster) return null;
   // TODO: re-enable once roster data is finalized
   return null;
-
-  return (
-    <div className={styles.rosterPanel}>
-      <p className={styles.rosterGeneral}>
-        <span className={styles.rosterGeneralBadge}>General</span>
-        <span className={styles.rosterGeneralName}>{roster.general}</span>
-      </p>
-      <ul className={styles.rosterUnits}>
-        {roster.units.map((unit, i) => (
-          <li key={i} className={styles.rosterUnit}>{unit}</li>
-        ))}
-      </ul>
-    </div>
-  );
 }
 
 function PlayerSetup({ label, name, setName, team, setTeam, listId, knownPlayers }) {

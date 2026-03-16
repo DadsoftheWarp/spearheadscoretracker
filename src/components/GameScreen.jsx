@@ -296,15 +296,6 @@ export default function GameScreen({ setup, onEndGame }) {
     });
   }
 
-  function setFirstTurn(val) {
-    setPriorities((prev) => {
-      const next = [...prev];
-      const current = next[idx] || { winner: null, firstTurn: null };
-      next[idx] = { ...current, firstTurn: val };
-      return next;
-    });
-  }
-
   function handleBack() {
     setUndoState(null);
     setCurrentRound((r) => r - 1);

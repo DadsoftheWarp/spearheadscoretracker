@@ -32,13 +32,13 @@ function PrioritySection({ priorities, player1Name, player2Name }) {
               : winner === 'player2'
                 ? player2Name
                 : null;
-          const firstTurnName =
+          const _firstTurnName =
             firstTurn === 'player1'
               ? player1Name
               : firstTurn === 'player2'
                 ? player2Name
                 : null;
-          const passed = winner && firstTurn && winner !== firstTurn;
+          const _passed = winner && firstTurn && winner !== firstTurn;
 
           let doubleTurn = false;
           if (i > 0 && firstTurn) {
