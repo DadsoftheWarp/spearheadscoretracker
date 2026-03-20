@@ -9,6 +9,7 @@ import GameScreen from './components/GameScreen.jsx';
 import GameSummaryScreen from './components/GameSummaryScreen.jsx';
 import RecordsScreen from './components/RecordsScreen.jsx';
 import GroupScreen from './components/GroupScreen.jsx';
+import FeedbackScreen from './components/FeedbackScreen.jsx';
 
 const SCREENS = {
   HOME: 'home',
@@ -17,6 +18,7 @@ const SCREENS = {
   SUMMARY: 'summary',
   RECORDS: 'records',
   GROUP: 'group',
+  FEEDBACK: 'feedback',
 };
 
 export default function App() {
@@ -149,6 +151,7 @@ export default function App() {
           onNewGame={() => setScreen(SCREENS.SETUP)}
           onRecords={() => setScreen(SCREENS.RECORDS)}
           onGroups={() => setScreen(SCREENS.GROUP)}
+          onFeedback={() => setScreen(SCREENS.FEEDBACK)}
           activeGroup={activeGroup}
           syncing={syncing}
         />
@@ -186,6 +189,12 @@ export default function App() {
           user={user}
           activeGroup={activeGroup}
           onGroupChange={setActiveGroup}
+          onBack={() => setScreen(SCREENS.HOME)}
+        />
+      )}
+      {screen === SCREENS.FEEDBACK && (
+        <FeedbackScreen
+          user={user}
           onBack={() => setScreen(SCREENS.HOME)}
         />
       )}

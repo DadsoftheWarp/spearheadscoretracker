@@ -1,0 +1,74 @@
+.feedbackScreen {
+  gap: 20px;
+}
+
+/* ── Form ───────────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hint {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.textareaWrap {
+  position: relative;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.5;
+}
+
+.charCount {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.charCountMax {
+  color: var(--danger);
+}
+
+.anonNote {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── Success state ──────────────────────────────────────────── */
+.successState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  padding-top: 24px;
+}
+
+.successIcon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.successTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.successBody {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 300px;
+}

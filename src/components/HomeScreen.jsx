@@ -9,6 +9,7 @@ export default function HomeScreen({
   onNewGame,
   onRecords,
   onGroups,
+  onFeedback,
   activeGroup,
   syncing,
 }) {
@@ -72,6 +73,10 @@ export default function HomeScreen({
             )}
           </button>
         )}
+
+        <button className={`btn btn-ghost btn-large ${styles.feedbackBtn}`} onClick={onFeedback}>
+          Suggest a Feature
+        </button>
 
         {/* Sign In / Sign Out — always at the bottom */}
         {!authLoading && (
