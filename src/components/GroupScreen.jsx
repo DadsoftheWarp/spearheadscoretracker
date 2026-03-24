@@ -199,10 +199,10 @@ export default function GroupScreen({ user, activeGroup, onGroupChange, onBack }
       await updateDoc(doc(db, 'groups', activeGroup.id), {
         members: arrayRemove(user.uid),
       });
+      onGroupChange(null);
     } catch {
       // best-effort
     }
-    onGroupChange(null);
   }
 
   return (

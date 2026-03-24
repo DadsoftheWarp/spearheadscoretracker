@@ -1,11 +1,6 @@
 import { Fragment } from 'react';
 import styles from './GameSummaryScreen.module.css';
-
-function resolveEntry(p) {
-  if (!p) return { winner: null, firstTurn: null };
-  if (typeof p === 'string') return { winner: p, firstTurn: p };
-  return { winner: p.winner ?? null, firstTurn: p.firstTurn ?? null };
-}
+import { resolveEntry } from '../utils/priorityHelpers.js';
 
 function PrioritySection({ priorities, player1Name, player2Name }) {
   const totalRounds = Math.max(priorities.length, 4);

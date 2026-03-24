@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { factions, alliances, spearheads, rosters, getAllianceForFaction, getFactionForTeam } from '../data/factions.js';
+import { factions, alliances, spearheads, getAllianceForFaction, getFactionForTeam } from '../data/factions.js';
 import styles from './GameSetupScreen.module.css';
 
 const allianceBadgeStyle = {
@@ -18,12 +18,6 @@ function resolveTeam(teamValue) {
   return { faction, spearhead, alliance };
 }
 
-function RosterPanel({ team }) {
-  const roster = rosters[team];
-  if (!roster) return null;
-  // TODO: re-enable once roster data is finalized
-  return null;
-}
 
 function PlayerSetup({ label, name, setName, team, setTeam, listId, knownPlayers }) {
   const [selectedAlliance, setSelectedAlliance] = useState('');
@@ -96,7 +90,6 @@ function PlayerSetup({ label, name, setName, team, setTeam, listId, knownPlayers
           {selectedAlliance}{faction !== team ? ` · ${faction}` : ''}
         </p>
       )}
-      <RosterPanel team={team} />
     </div>
   );
 }

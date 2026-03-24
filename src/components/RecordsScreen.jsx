@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './RecordsScreen.module.css';
+import { getPriorityWinner, getFirstTurnPlayer } from '../utils/priorityHelpers.js';
 
 const resultStyle = {
   Win: styles.resultWin,
@@ -57,18 +58,6 @@ function getTeamStats(playerGames, playerName) {
   }));
 }
 
-// Handle both old string format and new { winner, firstTurn } object format
-function getPriorityWinner(p) {
-  if (!p) return null;
-  if (typeof p === 'string') return p;
-  return p.winner ?? null;
-}
-
-function getFirstTurnPlayer(p) {
-  if (!p) return null;
-  if (typeof p === 'string') return p; // old format: priority winner = first turn
-  return p.firstTurn ?? null;
-}
 
 function getPriorityStats(playerGames, playerName) {
   const priorityBuckets = {
@@ -324,14 +313,17 @@ function deriveRecords(gamesList) {
   return map;
 }
 
-export default function RecordsScreen({ records, games, groupGames = [], activeGroup = null, onClearAll, onBack }) {
+export default function RecordsScreen({ records, games, userGames = [], userSyncing = false, groupGames = [], activeGroup = null, user = null, onClearAll, onBack }) {
   const [search, setSearch] = useState('');
   const [confirmClear, setConfirmClear] = useState(false);
-  const [view, setView] = useState('local'); // 'local' | 'group'
+  const [view, setView] = useState(user ? 'account' : 'local'); // 'local' | 'account' | 'group'
 
+  const showToggle = user || activeGroup;
+  const isAccountView = view === 'account' && user;
   const isGroupView = view === 'group' && activeGroup;
-  const displayGames = isGroupView ? groupGames : games;
-  const displayRecords = isGroupView ? deriveRecords(groupGames) : records;
+
+  const displayGames = isAccountView ? userGames : isGroupView ? groupGames : games;
+  const displayRecords = isAccountView ? deriveRecords(userGames) : isGroupView ? deriveRecords(groupGames) : records;
 
   const playerNames = Object.keys(displayRecords).filter((name) =>
     name.toLowerCase().includes(search.toLowerCase())
@@ -344,20 +336,30 @@ export default function RecordsScreen({ records, games, groupGames = [], activeG
         <h2>Records</h2>
       </div>
 
-      {activeGroup && (
+      {showToggle && (
         <div className={styles.viewToggle}>
           <button
-            className={`${styles.toggleBtn} ${!isGroupView ? styles.toggleActive : ''}`}
+            className={`${styles.toggleBtn} ${view === 'local' ? styles.toggleActive : ''}`}
             onClick={() => setView('local')}
           >
-            My Games
+            This Device
           </button>
-          <button
-            className={`${styles.toggleBtn} ${isGroupView ? styles.toggleActive : ''}`}
-            onClick={() => setView('group')}
-          >
-            Group: {activeGroup.name}
-          </button>
+          {user && (
+            <button
+              className={`${styles.toggleBtn} ${view === 'account' ? styles.toggleActive : ''}`}
+              onClick={() => setView('account')}
+            >
+              {userSyncing ? 'Syncing…' : 'My Account'}
+            </button>
+          )}
+          {activeGroup && (
+            <button
+              className={`${styles.toggleBtn} ${view === 'group' ? styles.toggleActive : ''}`}
+              onClick={() => setView('group')}
+            >
+              Group: {activeGroup.name}
+            </button>
+          )}
         </div>
       )}
 
@@ -384,7 +386,7 @@ export default function RecordsScreen({ records, games, groupGames = [], activeG
         </div>
       )}
 
-      {!isGroupView && (
+      {!isGroupView && !isAccountView && (
         <div className={styles.recordsDangerZone}>
           {confirmClear ? (
             <div className={styles.confirmClear}>

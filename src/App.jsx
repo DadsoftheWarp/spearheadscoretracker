@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, addDoc, query, orderBy, getDocs, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, doc, setDoc, query, orderBy, getDocs, serverTimestamp } from 'firebase/firestore';
 import { db } from './firebase.js';
 import { useLocalStorage } from './hooks/useLocalStorage.js';
 import { useAuth } from './hooks/useAuth.js';
@@ -40,6 +40,10 @@ export default function App() {
   const [groupGames, setGroupGames] = useState([]);
   const [syncing, setSyncing] = useState(false);
 
+  // Games fetched from Firestore for the signed-in user (cross-device history)
+  const [userGames, setUserGames] = useState([]);
+  const [userSyncing, setUserSyncing] = useState(false);
+
   // Fetch group games from Firestore whenever the user or active group changes
   useEffect(() => {
     let cancelled = false;
@@ -69,6 +73,36 @@ export default function App() {
     fetchGroupGames();
     return () => { cancelled = true; };
   }, [user, activeGroup?.id]);
+
+  // Fetch the signed-in user's personal game history from Firestore
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchUserGames() {
+      if (!user) {
+        setUserGames([]);
+        return;
+      }
+      setUserSyncing(true);
+      try {
+        const q = query(
+          collection(db, 'users', user.uid, 'games'),
+          orderBy('date', 'desc'),
+        );
+        const snap = await getDocs(q);
+        if (!cancelled) {
+          setUserGames(snap.docs.map((d) => ({ ...d.data(), id: d.id })));
+        }
+      } catch {
+        // Fail silently when offline
+      } finally {
+        if (!cancelled) setUserSyncing(false);
+      }
+    }
+
+    fetchUserGames();
+    return () => { cancelled = true; };
+  }, [user]);
 
   function handleStartGame(setupData) {
     setSetup(setupData);
@@ -112,19 +146,33 @@ export default function App() {
     setResult(null);
     setScreen(SCREENS.HOME);
 
-    // Also save to Firestore if the player is in a group
-    if (user && activeGroup?.id) {
+    if (user) {
       const firestoreGame = {
         ...newGame,
         recordedBy: user.uid,
         recordedByName: user.displayName ?? '',
         createdAt: serverTimestamp(),
       };
-      addDoc(collection(db, 'groups', activeGroup.id, 'games'), firestoreGame)
-        .then((docRef) => {
-          setGroupGames((prev) => [{ ...newGame, id: docRef.id }, ...prev]);
+
+      // Save to the user's personal game history (cross-device sync)
+      setDoc(doc(db, 'users', user.uid, 'games', String(id)), firestoreGame)
+        .then(() => {
+          setUserGames((prev) => [newGame, ...prev.filter((g) => String(g.id) !== String(id))]);
         })
-        .catch(() => {});
+        .catch((err) => {
+          console.warn('Failed to sync game to user account:', err);
+        });
+
+      // Also save to the group if the player is in one
+      if (activeGroup?.id) {
+        addDoc(collection(db, 'groups', activeGroup.id, 'games'), firestoreGame)
+          .then((docRef) => {
+            setGroupGames((prev) => [{ ...newGame, id: docRef.id }, ...prev]);
+          })
+          .catch((err) => {
+            console.warn('Failed to sync game to group:', err);
+          });
+      }
     }
   }
 
@@ -177,8 +225,11 @@ export default function App() {
         <RecordsScreen
           records={records}
           games={games}
+          userGames={userGames}
+          userSyncing={userSyncing}
           groupGames={groupGames}
           activeGroup={activeGroup}
+          user={user}
           onClearAll={handleClearAll}
           onBack={() => setScreen(SCREENS.HOME)}
         />
