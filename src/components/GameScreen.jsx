@@ -257,6 +257,7 @@ export default function GameScreen({ setup, onEndGame }) {
   const [p2Rounds, setP2Rounds] = useState([emptyRound()]);
   const [priorities, setPriorities] = useState([]);
   const [undoState, setUndoState] = useState(null);
+  const [swapped, setSwapped] = useState(false);
 
   const idx = currentRound - 1;
   const p1Score = p1Rounds[idx] || emptyRound();
@@ -348,6 +349,14 @@ export default function GameScreen({ setup, onEndGame }) {
             <span className={styles.totalChip}>
               {setup.player2.name}: <strong>{p2Total}</strong>
             </span>
+            <button
+              className={styles.swapBtn}
+              onClick={() => setSwapped((s) => !s)}
+              aria-label="Swap player card sides"
+              title="Swap sides"
+            >
+              ⇄
+            </button>
           </div>
         </div>
         <CoinFlipper />
@@ -371,16 +380,23 @@ export default function GameScreen({ setup, onEndGame }) {
       />
 
       <div className={styles.roundCards}>
-        <PlayerRoundCard
-          player={setup.player1}
-          roundScore={p1Score}
-          onUpdate={updateP1Round}
-        />
-        <PlayerRoundCard
-          player={setup.player2}
-          roundScore={p2Score}
-          onUpdate={updateP2Round}
-        />
+        {(swapped
+          ? [
+              { player: setup.player2, score: p2Score, onUpdate: updateP2Round },
+              { player: setup.player1, score: p1Score, onUpdate: updateP1Round },
+            ]
+          : [
+              { player: setup.player1, score: p1Score, onUpdate: updateP1Round },
+              { player: setup.player2, score: p2Score, onUpdate: updateP2Round },
+            ]
+        ).map(({ player, score, onUpdate }) => (
+          <PlayerRoundCard
+            key={player.name}
+            player={player}
+            roundScore={score}
+            onUpdate={onUpdate}
+          />
+        ))}
       </div>
 
       <div className={styles.roundNav}>
