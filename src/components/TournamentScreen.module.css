@@ -1,0 +1,410 @@
+.tournamentScreen {
+  overflow-y: auto;
+  gap: 12px;
+}
+
+/* ── Status row ─────────────────────────────────────────────────────────────── */
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.statusBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.statusRegistration {
+  background: rgba(212, 168, 67, 0.15);
+  color: var(--gold);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+}
+
+.statusActive {
+  background: rgba(232, 115, 42, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(232, 115, 42, 0.3);
+}
+
+.statusComplete {
+  background: rgba(39, 174, 96, 0.12);
+  color: var(--success);
+  border: 1px solid rgba(39, 174, 96, 0.25);
+}
+
+.toBadge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(74, 144, 217, 0.15);
+  color: #4a90d9;
+  border: 1px solid rgba(74, 144, 217, 0.3);
+}
+
+/* ── Phase containers ───────────────────────────────────────────────────────── */
+.phase {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.phaseHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sectionLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Registration ────────────────────────────────────────────────────────────── */
+.playerList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.playerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.playerName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.playerFaction {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.emptyPlayers {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.playerRowBot {
+  opacity: 0.65;
+  border-style: dashed;
+}
+
+.botBadge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.testBtn {
+  align-self: flex-start;
+  font-size: 0.82rem;
+  opacity: 0.75;
+}
+
+.testBtn:hover {
+  opacity: 1;
+}
+
+.factionPicker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+/* ── Pairings ────────────────────────────────────────────────────────────────── */
+.pairingList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pairingCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pairingDone {
+  border-color: rgba(39, 174, 96, 0.3);
+  background: rgba(39, 174, 96, 0.04);
+}
+
+.pairingForfeit {
+  opacity: 0.55;
+}
+
+.pairingPlayers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pairingPlayer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pairingPlayerRight {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.pairingName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.pairingFaction {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.pairingVs {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.pairingResult {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.resultDash {
+  color: var(--text-muted);
+}
+
+.forfeitLabel {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  font-style: italic;
+}
+
+.byeRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.byeBadge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: rgba(212, 168, 67, 0.15);
+  color: var(--gold);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+}
+
+/* ── TO controls ──────────────────────────────────────────────────────────────── */
+.toControls {
+  margin-top: 4px;
+}
+
+.confirmBox {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.confirmBox p {
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.confirmActions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Standings table ──────────────────────────────────────────────────────────── */
+.standingsWrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.standingsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.standingsTable th {
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  font-weight: 700;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.standingsTable td {
+  padding: 9px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.standingsTable tr:last-child td {
+  border-bottom: none;
+}
+
+.rowFirst td {
+  background: rgba(212, 168, 67, 0.06);
+}
+
+.rankCell {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  width: 28px;
+}
+
+.playerCell {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.standingName {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.standingFaction {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.recordCell {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tpCell {
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.vpCell {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Winner banner ────────────────────────────────────────────────────────────── */
+.deleteBtn {
+  align-self: flex-start;
+  color: var(--danger) !important;
+  opacity: 0.7;
+}
+
+.deleteBtn:hover {
+  opacity: 1;
+  border-color: var(--danger) !important;
+}
+
+.winnerBanner {
+  background: linear-gradient(135deg, rgba(212, 168, 67, 0.12) 0%, rgba(232, 115, 42, 0.08) 100%);
+  border: 1px solid rgba(212, 168, 67, 0.35);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.winnerLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.winnerName {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.winnerFaction {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}

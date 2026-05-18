@@ -71,7 +71,7 @@ function PrioritySection({ priorities, player1Name, player2Name }) {
   );
 }
 
-export default function GameSummaryScreen({ result, onSave, onDiscard }) {
+export default function GameSummaryScreen({ result, onSave, onDiscard, fromTournament = false }) {
   const { player1, player2, winner, priorities = [], realmLabel, map } = result;
 
   const winnerName =
@@ -183,7 +183,7 @@ export default function GameSummaryScreen({ result, onSave, onDiscard }) {
 
       <div className={styles.summaryActions}>
         <button className="btn btn-primary btn-large" onClick={onSave}>
-          Save &amp; Return Home
+          {fromTournament ? 'Save & Return to Tournament' : 'Save & Return Home'}
         </button>
         <button className="btn btn-danger" onClick={onDiscard}>
           Discard

@@ -148,14 +148,16 @@ function BoardSection({ realmSet, setRealmSet, map, setMap }) {
   );
 }
 
-export default function GameSetupScreen({ onStart, onBack, knownPlayers = [] }) {
-  const [p1Name, setP1Name] = useState('');
-  const [p1Team, setP1Team] = useState('');
-  const [p2Name, setP2Name] = useState('');
-  const [p2Team, setP2Team] = useState('');
+export default function GameSetupScreen({ onStart, onBack, knownPlayers = [], tournamentSetup = null }) {
+  const [p1Name, setP1Name] = useState(tournamentSetup?.player1?.name ?? '');
+  const [p1Team, setP1Team] = useState(tournamentSetup?.player1?.spearhead ?? tournamentSetup?.player1?.faction ?? '');
+  const [p2Name, setP2Name] = useState(tournamentSetup?.player2?.name ?? '');
+  const [p2Team, setP2Team] = useState(tournamentSetup?.player2?.spearhead ?? tournamentSetup?.player2?.faction ?? '');
   const [realmSet, setRealmSet] = useState(null);
   const [map, setMap] = useState(null);
   const [error, setError] = useState('');
+
+  const locked = !!tournamentSetup;
 
   function handleStart() {
     if (!p1Name.trim() || !p2Name.trim()) {
@@ -163,8 +165,8 @@ export default function GameSetupScreen({ onStart, onBack, knownPlayers = [] }) 
       return;
     }
     setError('');
-    const p1 = resolveTeam(p1Team);
-    const p2 = resolveTeam(p2Team);
+    const p1 = locked ? tournamentSetup.player1 : resolveTeam(p1Team);
+    const p2 = locked ? tournamentSetup.player2 : resolveTeam(p2Team);
     onStart({
       player1: { name: p1Name.trim(), faction: p1.faction || 'Unknown', spearhead: p1.spearhead, alliance: p1.alliance || 'Unknown' },
       player2: { name: p2Name.trim(), faction: p2.faction || 'Unknown', spearhead: p2.spearhead, alliance: p2.alliance || 'Unknown' },
@@ -178,28 +180,50 @@ export default function GameSetupScreen({ onStart, onBack, knownPlayers = [] }) 
     <div className={`screen ${styles.setupScreen}`}>
       <div className="screen-header">
         <button className="btn btn-ghost back-btn" onClick={onBack}>← Back</button>
-        <h2>New Game</h2>
+        <h2>{locked ? 'Tournament Game' : 'New Game'}</h2>
       </div>
       <div className={styles.setupPlayers}>
-        <PlayerSetup
-          label="Player 1"
-          name={p1Name}
-          setName={setP1Name}
-          team={p1Team}
-          setTeam={setP1Team}
-          listId="p1-names"
-          knownPlayers={knownPlayers}
-        />
-        <div className={styles.vsDivider}>VS</div>
-        <PlayerSetup
-          label="Player 2"
-          name={p2Name}
-          setName={setP2Name}
-          team={p2Team}
-          setTeam={setP2Team}
-          listId="p2-names"
-          knownPlayers={knownPlayers}
-        />
+        {locked ? (
+          <>
+            <div className={styles.playerSetup}>
+              <h3 className={styles.playerLabel}>Player 1</h3>
+              <p style={{ fontWeight: 700 }}>{p1Name}</p>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                {tournamentSetup.player1.spearhead || tournamentSetup.player1.faction}
+              </p>
+            </div>
+            <div className={styles.vsDivider}>VS</div>
+            <div className={styles.playerSetup}>
+              <h3 className={styles.playerLabel}>Player 2</h3>
+              <p style={{ fontWeight: 700 }}>{p2Name}</p>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                {tournamentSetup.player2.spearhead || tournamentSetup.player2.faction}
+              </p>
+            </div>
+          </>
+        ) : (
+          <>
+            <PlayerSetup
+              label="Player 1"
+              name={p1Name}
+              setName={setP1Name}
+              team={p1Team}
+              setTeam={setP1Team}
+              listId="p1-names"
+              knownPlayers={knownPlayers}
+            />
+            <div className={styles.vsDivider}>VS</div>
+            <PlayerSetup
+              label="Player 2"
+              name={p2Name}
+              setName={setP2Name}
+              team={p2Team}
+              setTeam={setP2Team}
+              listId="p2-names"
+              knownPlayers={knownPlayers}
+            />
+          </>
+        )}
       </div>
       <BoardSection
         realmSet={realmSet}

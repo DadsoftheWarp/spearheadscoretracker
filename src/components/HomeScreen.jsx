@@ -10,6 +10,7 @@ export default function HomeScreen({
   onRecords,
   onGroups,
   onFeedback,
+  onTournaments,
   activeGroup,
   syncing,
 }) {
@@ -73,6 +74,10 @@ export default function HomeScreen({
             )}
           </button>
         )}
+
+        <button className="btn btn-secondary btn-large" onClick={onTournaments}>
+          Tournaments
+        </button>
 
         <button className={`btn btn-ghost btn-large ${styles.feedbackBtn}`} onClick={onFeedback}>
           Suggest a Feature
