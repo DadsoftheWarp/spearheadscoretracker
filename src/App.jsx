@@ -203,6 +203,33 @@ export default function App() {
 
   function handleClearAll() { setGames([]); setRecords({}); }
 
+  function handleDeleteLocalGame(gameId) {
+    const updatedGames = games.filter((g) => g.id !== gameId);
+    setGames(updatedGames);
+    const newRecords = {};
+    for (const game of updatedGames) {
+      const { player1, player2, winner } = game;
+      for (const [key, player] of [['player1', player1], ['player2', player2]]) {
+        if (!newRecords[player.name]) newRecords[player.name] = { wins: 0, losses: 0, draws: 0 };
+        if (winner === 'draw') newRecords[player.name].draws += 1;
+        else if (winner === key) newRecords[player.name].wins += 1;
+        else newRecords[player.name].losses += 1;
+      }
+    }
+    setRecords(newRecords);
+    if (user) {
+      deleteDoc(doc(db, 'users', user.uid, 'games', String(gameId)))
+        .then(() => setUserGames((prev) => prev.filter((g) => String(g.id) !== String(gameId))))
+        .catch((err) => console.warn('Failed to delete game from user account:', err));
+    }
+  }
+
+  function handleDeleteUserGame(gameId) {
+    deleteDoc(doc(db, 'users', user.uid, 'games', String(gameId)))
+      .then(() => setUserGames((prev) => prev.filter((g) => String(g.id) !== String(gameId))))
+      .catch((err) => console.warn('Failed to delete game from account:', err));
+  }
+
   // ── Tournament persistence helpers ───────────────────────────────────────────
   async function saveTournament(tournament) {
     setActiveTournament(tournament);
@@ -397,6 +424,8 @@ export default function App() {
           activeGroup={activeGroup}
           user={user}
           onClearAll={handleClearAll}
+          onDeleteLocalGame={handleDeleteLocalGame}
+          onDeleteUserGame={user ? handleDeleteUserGame : undefined}
           onBack={() => setScreen(SCREENS.HOME)}
         />
       )}

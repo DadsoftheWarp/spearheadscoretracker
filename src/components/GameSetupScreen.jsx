@@ -97,6 +97,7 @@ function PlayerSetup({ label, name, setName, team, setTeam, listId, knownPlayers
 const REALMS = {
   'fire-and-jade': { label: 'Fire & Jade', maps: ['Aqshy', 'Ghyran'] },
   'sand-and-bone': { label: 'Sand & Bone', maps: ['Ossia', 'Dolorum'] },
+  'city-of-ashe': { label: 'City of Ashe', maps: ['Shattered Crossroads', 'Ashen Bastion'] },
 };
 
 function BoardSection({ realmSet, setRealmSet, map, setMap }) {

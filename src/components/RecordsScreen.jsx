@@ -211,7 +211,8 @@ function HeadToHeadSection({ playerGames, playerName }) {
   );
 }
 
-function GameHistoryItem({ game, playerName }) {
+function GameHistoryItem({ game, playerName, onDeleteGame }) {
+  const [deleting, setDeleting] = useState(false);
   const isP1 = game.player1.name === playerName;
   const me = isP1 ? game.player1 : game.player2;
   const opp = isP1 ? game.player2 : game.player1;
@@ -226,6 +227,14 @@ function GameHistoryItem({ game, playerName }) {
       <div className={styles.historyRow}>
         <span className={styles.historyDate}>{date}</span>
         <span className={`${styles.historyResult} ${resultStyle[result]}`}>{result}</span>
+        {onDeleteGame && !deleting && (
+          <button
+            className={styles.deleteGameBtn}
+            onClick={() => setDeleting(true)}
+          >
+            Delete
+          </button>
+        )}
       </div>
       <div className={styles.historyRow}>
         <span className={styles.historyFaction}>
@@ -244,11 +253,20 @@ function GameHistoryItem({ game, playerName }) {
           {game.realmLabel}{game.map && ` · ${game.map}`}
         </div>
       )}
+      {deleting && (
+        <div className={styles.deleteConfirm}>
+          <span className={styles.deleteConfirmText}>Delete this game?</span>
+          <div className={styles.deleteConfirmActions}>
+            <button className="btn btn-danger btn-sm" onClick={() => onDeleteGame(game.id)}>Delete</button>
+            <button className="btn btn-secondary btn-sm" onClick={() => setDeleting(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function PlayerRecord({ playerName, record, games }) {
+function PlayerRecord({ playerName, record, games, onDeleteGame }) {
   const [expanded, setExpanded] = useState(false);
 
   const playerGames = games.filter(
@@ -288,7 +306,7 @@ function PlayerRecord({ playerName, record, games }) {
                 .slice()
                 .sort((a, b) => b.id - a.id)
                 .map((g) => (
-                  <GameHistoryItem key={g.id} game={g} playerName={playerName} />
+                  <GameHistoryItem key={g.id} game={g} playerName={playerName} onDeleteGame={onDeleteGame} />
                 ))}
             </>
           )}
@@ -313,7 +331,7 @@ function deriveRecords(gamesList) {
   return map;
 }
 
-export default function RecordsScreen({ records, games, userGames = [], userSyncing = false, groupGames = [], activeGroup = null, user = null, onClearAll, onBack }) {
+export default function RecordsScreen({ records, games, userGames = [], userSyncing = false, groupGames = [], activeGroup = null, user = null, onClearAll, onDeleteLocalGame, onDeleteUserGame, onBack }) {
   const [search, setSearch] = useState('');
   const [confirmClear, setConfirmClear] = useState(false);
   const [view, setView] = useState(user ? 'account' : 'local'); // 'local' | 'account' | 'group'
@@ -324,6 +342,7 @@ export default function RecordsScreen({ records, games, userGames = [], userSync
 
   const displayGames = isAccountView ? userGames : isGroupView ? groupGames : games;
   const displayRecords = isAccountView ? deriveRecords(userGames) : isGroupView ? deriveRecords(groupGames) : records;
+  const deleteGame = isAccountView ? onDeleteUserGame : isGroupView ? null : onDeleteLocalGame;
 
   const playerNames = Object.keys(displayRecords).filter((name) =>
     name.toLowerCase().includes(search.toLowerCase())
@@ -381,6 +400,7 @@ export default function RecordsScreen({ records, games, userGames = [], userSync
               playerName={name}
               record={displayRecords[name]}
               games={displayGames}
+              onDeleteGame={deleteGame}
             />
           ))}
         </div>

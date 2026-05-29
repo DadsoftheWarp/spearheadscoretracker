@@ -385,3 +385,44 @@
   font-size: 0.8rem;
   flex-shrink: 0;
 }
+
+/* ── Per-game delete ───────────────────────────────────────── */
+.deleteGameBtn {
+  margin-left: auto;
+  background: rgba(192, 57, 43, 0.12);
+  border: 1px solid rgba(192, 57, 43, 0.3);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--danger);
+  padding: 4px 7px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.deleteGameBtn:hover {
+  background: rgba(192, 57, 43, 0.25);
+  border-color: rgba(192, 57, 43, 0.55);
+}
+
+.deleteConfirm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  margin-top: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.deleteConfirmText {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.deleteConfirmActions {
+  display: flex;
+  gap: 6px;
+}

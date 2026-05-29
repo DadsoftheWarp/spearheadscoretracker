@@ -1,26 +1,26 @@
 // Named Spearhead forces per faction (official GW warband names)
 export const spearheads = {
   // Order
-  'Cities of Sigmar': ['Castelite Company', 'Fusil-Platoon'],
+  'Cities of Sigmar': ['Castelite Company', 'Fusil-Platoon', 'Sentinels of Embergard', 'Zenestras Zealots'],
   'Daughters of Khaine': ['Heartflayer Troupe'],
-  Fyreslayers: ['Saga Axeband'],
+  'Fyreslayers': ['Saga Axeband'],
   'Idoneth Deepkin': ['Akhelian Tide Guard', 'Soulraid Hunt'],
   'Kharadron Overlords': ['Grundstok Trailblazers', 'Skyhammer Task Force'],
   'Lumineth Realm-lords': ['Glittering Phalanx', 'Hurakan Vangaurd'],
-  Seraphon: ['Starscale Warhost', 'Sunblooded Prowlers'],
+  'Seraphon': ['Starscale Warhost', 'Sunblooded Prowlers'],
   'Stormcast Eternals': ['Vigilant Brotherhood', "Yndrasta's Spearhead"],
-  Sylvaneth: ['Bitterbark Copse', 'Spitewing Flight'],
+  'Sylvaneth': ['Bitterbark Copse', 'Spitewing Flight'],
   // Chaos
   'Blades of Khorne': ['Bloodbound Gore Pilgrims', 'Fangs of the Blood God'],
   'Disciples of Tzeentch': ['Fluxblade Coven', 'Tzaangor Warflock'],
   'Hedonites of Slaanesh': ['Blades of the Lurid Dream'],
   'Helsmiths of Hashut': ['Helforge Host'],
   'Maggotkin of Nurgle': ['Bleak Host', 'Bubonic Cell'],
-  Skaven: ['Gnawfeast Clawpack', 'Warpspark Clawpack'],
+  'Skaven': ['Crixxits Kill-pack', 'Gnawfeast Clawpack', 'Warpspark Clawpack'],
   'Slaves to Darkness': ['Darkoath Raiders', 'Bloodwind Legion'],
   // Death
   'Flesh-eater Courts': ['Carrion Retainers', 'Charnel Watch'],
-  Nighthaunt: ['Cursed Shacklehorde', 'Slasher Host'],
+  'Nighthaunt': ['Cursed Shacklehorde', 'Slasher Host'],
   'Ossiarch Bonereapers': [
     'Mortisan Elite',
     'Kavalos Vanguard',
